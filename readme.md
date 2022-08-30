@@ -16,6 +16,6 @@ A tape is a single file playlist. A tape can be a playlist for an album but main
 
 credits:
 
--lua framework by slime and love2d team: https://love2d.org/
--oop module by rxi: https://github.com/rxi/classic
+- lua framework by slime and love2d team: https://love2d.org/
+- oop module by rxi: https://github.com/rxi/classic
 
