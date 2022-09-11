@@ -1,5 +1,3 @@
-Object = require('moontape.object') -- oop clss
-require("src.utils")
 
 function love.load()
     -- imports global

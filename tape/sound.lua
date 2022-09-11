@@ -1,6 +1,11 @@
 
-local generator = require("libs.generator")
-local flux = require("libs.flux")
+
+
+local current_folder = (...):gsub('%.[^%.]+$', '')
+
+local Object = require(current_folder .. '.oop')
+local Generator = require(current_folder .. ".generator")
+local Flux = require(current_folder .. ".flux")
 
 --------------------------------------------------------------------------------------------------------------------------------
 local function clamp(val, lower, upper)
@@ -13,7 +18,7 @@ local sound = Object:extend()
 --------------------------------------------------------------------------------------------------------------------------------
 function sound:new(ops)
     assert(type(ops) == "table", 'the sound arguments must be  a table')
-    assert(ops.source, "no source data found a sound")
+    assert(ops.source, "no source data found in a sound")
     self.paused = false
     self.volume = ops.volume or 1
     self.schedule = ops.schedule or nil
@@ -22,9 +27,9 @@ function sound:new(ops)
     self.position = ops.position or nil
     self.tween = ops.volumeTween or nil
 
-    if type(self.source) == "table" then -- se  è una tabella enon un sounddata allora creare un generatore
-        self.sound = generator(ops.source)
-    elseif type(self.source) == "string" then
+    if type(ops.source) == "table" then -- se  è una tabella enon un sounddata allora creare un generatore
+        self.sound = Generator(ops.source)
+    elseif type(ops.source) == "string" then
         self.sound = love.audio.newSource(ops.source, "stream")
     end
 
@@ -62,10 +67,7 @@ function sound:update(dt)
         if self.time > self.soundTimer and playable(self.schedule) then
             self:play()
         end
-        
     end
-
-
 
     if self.loop and playable(self.schedule) and not self.paused and not self.sound:isPlaying() then
         self.sound:play()
