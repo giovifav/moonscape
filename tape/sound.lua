@@ -4,7 +4,6 @@
 local current_folder = (...):gsub('%.[^%.]+$', '')
 
 local Object = require(current_folder .. '.oop')
-local Generator = require(current_folder .. ".generator")
 local Flux = require(current_folder .. ".flux")
 
 --------------------------------------------------------------------------------------------------------------------------------
@@ -27,11 +26,9 @@ function sound:new(ops)
     self.position = ops.position or nil
     self.tween = ops.volumeTween or nil
 
-    if type(ops.source) == "table" then -- se  è una tabella enon un sounddata allora creare un generatore
-        self.sound = Generator(ops.source)
-    elseif type(ops.source) == "string" then
+
         self.sound = love.audio.newSource(ops.source, "stream")
-    end
+
 
     if type(self.playback) == "string" then
         self.loop = true
@@ -47,6 +44,7 @@ end
 
 --------------------------------------------------------------------------------------------------------------------------------
 function sound:update(dt)
+    
     local function playable(schedule)
         if schedule then
             local time = os.date('*t')
