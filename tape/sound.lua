@@ -25,10 +25,7 @@ function sound:new(ops)
     self.filters = ops.filters or nil
     self.position = ops.position or nil
     self.tween = ops.volumeTween or nil
-
-
-        self.sound = love.audio.newSource(ops.source, "stream")
-
+    self.sound = love.audio.newSource(ops.source, "stream")
 
     if type(self.playback) == "string" then
         self.loop = true
