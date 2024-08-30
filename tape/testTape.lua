@@ -28,6 +28,7 @@ return {
             playback = { 8, 16 }, -- random playback between 8 and 16 seconds   
             playback = 5, -- playback every 5 seconds 
             playback = "loop", -- the sound will loop forever,
+            playback = "playlist" -- the sound will be added to the tape playlist, schedule playback will be ignored 
             ----------------------------------------------------------------------------------------------
             -- SCHEDULE PLAYBACK------------------------------------------------------------------------------------------------------------------------------
             -- set the hours ( in 24H format) in that the sound will played
