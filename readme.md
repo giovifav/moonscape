@@ -6,7 +6,8 @@ A player for endless music composition, ambient soundscapes and music playlist: 
 
 ## Instructions
 
-to play a tape file simply drag and drop it into the player window
+to play a tape file simply drag and drop it into the player window or  via the load button
+
 
 ## What is the tape format?
 
@@ -22,7 +23,6 @@ return {
     info = "", -- optional - extra info 
     cover = "", -- optional - relative path to the cover art (jpeg, png) for the tape
     volume = 1, -- set the master volume between 0 and 1 , the master volume is also controllable via gui - optional - default = 1
-   
     sounds = {
         -- the sounds table in an array of tables, every subtable contains info for a specific sound
         {
@@ -45,7 +45,7 @@ return {
             playback = { 8, 16 }, -- random playback between 8 and 16 seconds   
             playback = 5, -- playback every 5 seconds 
             playback = "loop", -- the sound will loop forever,
-            playback = "playlist", -- the sound will be added to the tape playlist, schedule playback will be ignored 
+            playback = "playlist", -- the sound will be added to the tape playlist, schedule playback  and position will be ignored 
             ----------------------------------------------------------------------------------------------
             -- SCHEDULE PLAYBACK------------------------------------------------------------------------------------------------------------------------------
             -- set the hours ( in 24H format) in that the sound will played
@@ -92,7 +92,7 @@ return {
             name = "small_distortion",
             type = 'distortion',
             gain = 0.5,
-            edge = 0.25
+            edge = 0.25,
         }, 
         { 
             name = "standard_reverb", 
@@ -100,9 +100,6 @@ return {
         },
     }
 }
-
-
-
 ```
 
 ## Credits
