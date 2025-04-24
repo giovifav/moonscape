@@ -5,7 +5,7 @@ local current_folder = (...):gsub('%.[^%.]+$', '')
 
 local Object = require(current_folder .. '.oop')
 local Flux = require(current_folder .. ".flux")
-
+local playlist = {}
 --------------------------------------------------------------------------------------------------------------------------------
 local function clamp(val, lower, upper)
     if lower > upper then lower, upper = upper, lower end -- swap if boundaries supplied the wrong way
@@ -25,11 +25,16 @@ function sound:new(ops)
     self.filters = ops.filters or nil
     self.position = ops.position or nil
     self.tween = ops.volumeTween or nil
+    
     self.sound = love.audio.newSource(ops.source, "stream")
 
     if type(self.playback) == "string" then
-        self.loop = true
-        self.sound:setLooping(true)
+        if self.playback == "loop" then
+            self.sound:setLooping(true)
+        elseif self.playback == "playlist" then
+            self.sound:setLooping(false)
+            table.insert(playlist, self.sound)
+        end
     elseif type(self.playback) == "table" or type(self.playback) == "number" then
         self.playback = ops.playback
         self.sound:setLooping(false)
@@ -75,7 +80,7 @@ function sound:resetTime()
     if type(self.playback) == "table" then
         self.soundTimer = love.math.random(self.playback[1], self.playback[2])
     elseif type(self.playback) == "number" then
-        self.soundTimer = love.math.random(self.playback)
+        self.soundTimer = self.playback
     else
         self.soundTimer = 0
     end
@@ -95,8 +100,7 @@ end
 --------------------------------------------------------------------------------------------------------------------------------
 function sound:setPitch()
     if type(self.pitch) == "table" then
-        local pitch = love.math.random(self.pitch[1] * 10, self.pitch[2] * 10) /
-            10
+        local pitch = love.math.random(self.pitch[1] * 10, self.pitch[2] * 10) / 10
         self.sound:setPitch(pitch)
     elseif type(self.pitch) == "number" then
         self.sound:setPitch(self.pitch)

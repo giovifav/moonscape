@@ -1,5 +1,4 @@
 local current_folder = (...):gsub('%.init$', '')
-local sound = require(current_folder .. '.sound')
 local Object = require(current_folder .. '.oop')
 
 local tape = Object:extend()

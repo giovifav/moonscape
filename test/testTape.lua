@@ -3,7 +3,10 @@ return {
     title = "A sample TapeFile definition", -- tape title
     author = "Giovanni Favaro", -- optional - tape author
     info = "", -- optional - extra info 
-    cover = "", -- optional - relative path to the cover art (jpeg, png) for the tape
+    cover = "cover.png", -- optional - relative path to the cover art (jpeg, png) for the tape
+    cover =  { "cover1.png", "cover2.png" }, -- optional - array of relative path to the cover art (jpeg, png) for the tape
+    video = "video.ogv", -- optional - relative path to the video ( Ogg Theora video ) for the tape
+    video = { "video1.ogv", "video2.ofv" }, -- optional - array of relative path to the video ( Ogg Theora video ) for the tape
     volume = 1, -- set the master volume between 0 and 1 , the master volume is also controllable via gui - optional - default = 1
    
     sounds = {
@@ -79,7 +82,67 @@ return {
         }, 
         { 
             name = "standard_reverb", 
-            type = 'reverb' ,
+            type = 'reverb'
         },
+        {
+            name= "chorus1",
+            type="chorus",
+            waveform="sine",
+            phase=53.57,
+            rate=2.5,
+            depth=.02979,
+            feedback=.9298,
+            delay=.004081
+        },
+        {
+            name = "flanger1",
+            type="flanger",
+            volume=1,
+            waveform="triangle",
+            phase=0,
+            rate=.27,
+            depth=1,
+            feedback=-.5,
+            delay=.002
+        },
+        {
+            name = "equalizer1",
+            type="equalizer",
+            volume=1,
+            lowgain=1,
+            lowcut=200,
+            lowmidgain=1,
+            lowmidfrequency=500,
+            lowmidbandwidth=1,
+            highmidgain=1,
+            highmidfrequency=3000,
+            highmidbandwidth=1,
+            highgain=1,
+            highcut=6000
+        },
+        {
+            name = "compressor1",
+            type="compressor",
+            volume=.63443077339102,
+            enable=true
+        },
+        {
+            name = "reverb1",
+            type="reverb",
+            volume=1,
+            density=1,
+            diffusion=.3,
+            gain=.3162,
+            highgain=.7328,
+            decaytime=1.49,
+            decayhighratio=.86,
+            earlygain=.25,
+            earlydelay=.007,
+            lategain=.9954,
+            latedelay=.011,
+            airabsorption=.9943,
+            roomrolloff=0,
+            highlimit=true
+        }
     }
 }
