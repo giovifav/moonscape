@@ -13,27 +13,39 @@ local function clamp(val, lower, upper)
 end
 
 --------------------------------------------------------------------------------------------------------------------------------
+
+local function count(t)
+    local count = 0      
+    for _, _ in pairs(t) do
+        count = count + 1
+    end
+    return count
+end 
+--------------------------------------------------------------------------------------------------------------------------------
 local sound = Object:extend()
 --------------------------------------------------------------------------------------------------------------------------------
-function sound:new(ops)
+function sound:new(ops, path)
     assert(type(ops) == "table", 'the sound arguments must be  a table')
     assert(ops.source, "no source data found in a sound")
     self.paused = false
     self.volume = ops.volume or 1
     self.schedule = ops.schedule or nil
     self.pitch = ops.pitch or 0
-    self.filters = ops.filters or nil
     self.position = ops.position or nil
     self.tween = ops.volumeTween or nil
+    self.effects = ops.effects or nil
+    self.loading = ops.loading or "stream"
+    self.hasFinished = false
+    self.effects = ops.effects or nil
+    self.effectsCount = count(ops.effects) or 0
     
-    self.sound = love.audio.newSource(ops.source, "stream")
+    self.sound = love.audio.newSource(path .. ops.source, self.loading)
 
     if type(self.playback) == "string" then
         if self.playback == "loop" then
             self.sound:setLooping(true)
         elseif self.playback == "playlist" then
             self.sound:setLooping(false)
-            table.insert(playlist, self.sound)
         end
     elseif type(self.playback) == "table" or type(self.playback) == "number" then
         self.playback = ops.playback
@@ -41,7 +53,6 @@ function sound:new(ops)
     end
 
     sound:resetTime()
-    self:play()
 end
 
 --------------------------------------------------------------------------------------------------------------------------------
@@ -61,19 +72,33 @@ function sound:update(dt)
             return true
         end
     end
-
-    if not self.paused and not self.loop then
-        self.time = self.time + dt
-        if self.time > self.soundTimer and playable(self.schedule) then
-            self:play()
+    if not self.playback == "playlist" then
+        if not self.paused and not self.loop then
+            self.time = self.time + dt
+            if self.time > self.soundTimer and playable(self.schedule) then
+                self:play() 
+            end
+        end
+    
+        if self.loop and playable(self.schedule) and not self.paused and not self.sound:isPlaying() then
+            self.sound:play()
+        elseif self.loop and self.sound:isPlaying() and not playable(self.schedule) then
+            self.sound:stop()
         end
     end
 
-    if self.loop and playable(self.schedule) and not self.paused and not self.sound:isPlaying() then
-        self.sound:play()
-    elseif self.loop and self.sound:isPlaying() and not playable(self.schedule) then
-        self.sound:stop()
+    if self.playback == "playlist" then
+        if not self.hasFinished then
+            local position = sound:tell()
+            local duration = sound:getDuration()
+    
+            -- Confronto con una tolleranza piccola per evitare problemi di precisione
+            if position >= duration - 0.01 and not sound:isPlaying() then
+                self.hasFinished = true
+            end
+        end
     end
+
 end
 --------------------------------------------------------------------------------------------------------------------------------
 function sound:resetTime()
@@ -107,11 +132,37 @@ function sound:setPitch()
     end
 end
 
+
+function sound:setPosition()
+    if type(self.position) == "table" then
+        if type(self.position[1]) == "table" and type(self.position[2]) == table then
+            local x = love.math.random(self.position[1][1] * 10, self.position[1][2] * 10) / 10
+            local y = love.math.random(self.position[2][1] * 10, self.position[2][2] * 10) / 10
+            self.sound:setPosition(x, y)
+        else
+            self.sound:setPosition(self.position[1], self.position[2])
+        end
+    end
+end
+--------------------------------------------------------------------------------------------------------------------------------
+
+function sound:setEffects()
+    if type(self.effects) == "string" then
+        self.sound:setEffect(self.effects)
+    elseif type(self.effects) == "table" then
+        for i, v in ipairs(self.effects) do
+            self.sound:setEffect(v, false)
+        end
+        local effect = love.math.random(1, self.effectsCount)
+        self.sound:setEffect(self.effects[effect], true)
+    end
+end
 --------------------------------------------------------------------------------------------------------------------------------
 function sound:play()
     self:setVolume()
     self:setPitch()
     self:resetTime()
+    self:setEffects()
     self.sound:play()
     self.paused = false
 end

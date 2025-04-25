@@ -6,7 +6,7 @@ return {
     cover = "cover.png", -- optional - relative path to the cover art (jpeg, png) for the tape
     cover =  { "cover1.png", "cover2.png" }, -- optional - array of relative path to the cover art (jpeg, png) for the tape
     video = "video.ogv", -- optional - relative path to the video ( Ogg Theora video ) for the tape
-    video = { "video1.ogv", "video2.ofv" }, -- optional - array of relative path to the video ( Ogg Theora video ) for the tape
+    video = { "video1.ogv", "video2.ogv" }, -- optional - array of relative path to the video ( Ogg Theora video ) for the tape
     volume = 1, -- set the master volume between 0 and 1 , the master volume is also controllable via gui - optional - default = 1
    
     sounds = {
@@ -18,6 +18,10 @@ return {
             -- the  sound can be a generator -- a generator generate sound noise or pure waves
             source = {waveform = 'sawtooth', frequency = 440},
             --------------------------------------------------------------------------------------
+            --LOADING METHOD
+            -- the sound can be loaded in different way
+            -- stream = load the sound in a streaming way, this is the default method
+            -- static = load the sound in a static way, this is useful for short sound
             -- VOLUME---------------------------------------------------------------------------
             -- sound specific volume for the source (between 0,1)
             volume = 1,
@@ -44,9 +48,9 @@ return {
             -- set the position of sound, only work for mono sounds and generators
             position = { -0.7, 0.9 }, -- set the audio position
             position = { { -1, 1 }, { -1, 1 } }, -- set a random audio position (between range) every time the audio is played
-            position = { {  -0.7, 0.9 }, {  0.9, -0.7  }, 4  }, -- tween an  audio position (from start position to finish position) in four seconds every time the audio is played
-            position = { {  { -1, 1 }, { -1, 1 }}, {  { -1, 1 }, { -1, 1 } }, 4  }, -- tween an  audio position (from random start position to random finish position) in four seconds every time the audio is played
-            position = { {  { -1, 1 }, { -1, 1 }}, {  { -1, 1 }, { -1, 1 } }, 0  }, -- tween an  audio position (from random start position to random finish position)  in the duration of the sound every time the audio is played
+           -- position = { {  -0.7, 0.9 }, {  0.9, -0.7  }, 4  }, -- tween an  audio position (from start position to finish position) in four seconds every time the audio is played
+            --position = { {  { -1, 1 }, { -1, 1 }}, {  { -1, 1 }, { -1, 1 } }, 4  }, -- tween an  audio position (from random start position to random finish position) in four seconds every time the audio is played
+            --position = { {  { -1, 1 }, { -1, 1 }}, {  { -1, 1 }, { -1, 1 } }, 0  }, -- tween an  audio position (from random start position to random finish position)  in the duration of the sound every time the audio is played
             -------------------------------------------------------------------------------------------------------------------
             -- EFFECTS--------------------------------------------------------------------------------------------------------
             effects = "standard_reverb", -- set effect to standard reverb
