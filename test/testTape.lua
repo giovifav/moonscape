@@ -7,7 +7,7 @@ return {
     cover =  { "cover1.png", "cover2.png" }, -- optional - array of relative path to the cover art (jpeg, png) for the tape
     video = "video.ogv", -- optional - relative path to the video ( Ogg Theora video ) for the tape
     video = { "video1.ogv", "video2.ogv" }, -- optional - array of relative path to the video ( Ogg Theora video ) for the tape
-    volume = 1, -- set the master volume between 0 and 1 , the master volume is also controllable via gui - optional - default = 1
+    volume = 0.7, -- set the master volume between 0 and 1 , the master volume is also controllable via gui - optional - default = 1
    
     sounds = {
         -- the sounds table in an array of tables, every subtable contains info for a specific sound
@@ -16,19 +16,21 @@ return {
             -- if sound is a string must be the relative path to the sound file
             source = "firecracker.wav",
             -- the  sound can be a generator -- a generator generate sound noise or pure waves
-            source = {waveform = 'sawtooth', frequency = 440},
+            --source = {waveform = 'sawtooth', frequency = 440},
             --------------------------------------------------------------------------------------
-            --LOADING METHOD
+            --LOADING METHOD----------------------------------------------------------------------
             -- the sound can be loaded in different way
             -- stream = load the sound in a streaming way, this is the default method
             -- static = load the sound in a static way, this is useful for short sound
+            loading = "stream", -- load the sound in a streaming way
+            loading = "static", -- load the sound in a static way
             -- VOLUME---------------------------------------------------------------------------
             -- sound specific volume for the source (between 0,1)
             volume = 1,
             volume = 0.4,
             volume = { 0, 1 }, -- random volume every reproduction between min and max
-            volume = {0, 1, 4}, -- tween the volume between 0 an 1 in 4 seconds
-            volume = {0, 1, 0}, -- tween the volume between 0 an 1 in the duration of the sound
+            --volume = {0, 1, 4}, -- tween the volume between 0 an 1 in 4 seconds
+            --volume = {0, 1, 0}, -- tween the volume between 0 an 1 in the duration of the sound
             --------------------------------------------------------------------------------------
             -- PLAYBACK------------------------------------------------------------------------------
             -- how the sound is reproducted
@@ -46,11 +48,11 @@ return {
             --------------------------------------------------------------------------------------------------------------------------------
             -- POSITION------------------------------------------------------------------------------------------------------------------------------
             -- set the position of sound, only work for mono sounds and generators
-            position = { -0.7, 0.9 }, -- set the audio position
-            position = { { -1, 1 }, { -1, 1 } }, -- set a random audio position (between range) every time the audio is played
-           -- position = { {  -0.7, 0.9 }, {  0.9, -0.7  }, 4  }, -- tween an  audio position (from start position to finish position) in four seconds every time the audio is played
-            --position = { {  { -1, 1 }, { -1, 1 }}, {  { -1, 1 }, { -1, 1 } }, 4  }, -- tween an  audio position (from random start position to random finish position) in four seconds every time the audio is played
-            --position = { {  { -1, 1 }, { -1, 1 }}, {  { -1, 1 }, { -1, 1 } }, 0  }, -- tween an  audio position (from random start position to random finish position)  in the duration of the sound every time the audio is played
+            position = { -0.7, 0.9, 0 }, -- set the audio position
+            position = { { -1, 1 }, { -1, 1 }, {-1,1} }, -- set a random audio position (between range) every time the audio is played
+            -- position = { {  -0.7, 0.9 }, {  0.9, -0.7  },, {-1,1} 4  }, -- tween an  audio position (from start position to finish position) in four seconds every time the audio is played
+            --position = { {  { -1, 1 }, { -1, 1 }, {-1,1}}, {  { -1, 1 }, { -1, 1 }, {-1,1} }, 4  }, -- tween an  audio position (from random start position to random finish position) in four seconds every time the audio is played
+            --position = { {  { -1, 1 }, { -1, 1 }, {-1,1}}, {  { -1, 1 }, { -1, 1 }, {-1,1} }, 0  }, -- tween an  audio position (from random start position to random finish position)  in the duration of the sound every time the audio is played
             -------------------------------------------------------------------------------------------------------------------
             -- EFFECTS--------------------------------------------------------------------------------------------------------
             effects = "standard_reverb", -- set effect to standard reverb

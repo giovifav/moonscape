@@ -1,6 +1,3 @@
-
-
-
 local current_folder = (...):gsub('%.[^%.]+$', '')
 
 local Object = require(current_folder .. '.oop')
@@ -8,19 +5,21 @@ local Flux = require(current_folder .. ".flux")
 local playlist = {}
 --------------------------------------------------------------------------------------------------------------------------------
 local function clamp(val, lower, upper)
-    if lower > upper then lower, upper = upper, lower end -- swap if boundaries supplied the wrong way
+    if lower > upper then
+        lower, upper = upper, lower
+    end -- swap if boundaries supplied the wrong way
     return math.max(lower, math.min(upper, val))
 end
 
 --------------------------------------------------------------------------------------------------------------------------------
 
 local function count(t)
-    local count = 0      
+    local count = 0
     for _, _ in pairs(t) do
         count = count + 1
     end
     return count
-end 
+end
 --------------------------------------------------------------------------------------------------------------------------------
 local sound = Object:extend()
 --------------------------------------------------------------------------------------------------------------------------------
@@ -38,7 +37,7 @@ function sound:new(ops, path)
     self.hasFinished = false
     self.effects = ops.effects or nil
     self.effectsCount = count(ops.effects) or 0
-    
+
     self.sound = love.audio.newSource(path .. ops.source, self.loading)
 
     if type(self.playback) == "string" then
@@ -57,15 +56,19 @@ end
 
 --------------------------------------------------------------------------------------------------------------------------------
 function sound:update(dt)
-    
+
     local function playable(schedule)
         if schedule then
             local time = os.date('*t')
             if type(schedule) == "number" then
-                if time.hour == schedule then return true end
+                if time.hour == schedule then
+                    return true
+                end
             elseif type(schedule) == "table" then
                 for k, v in ipairs(schedule) do
-                    if time.hour == v[k] then return true end
+                    if time.hour == v then
+                        return true
+                    end
                 end
             end
         else
@@ -76,10 +79,10 @@ function sound:update(dt)
         if not self.paused and not self.loop then
             self.time = self.time + dt
             if self.time > self.soundTimer and playable(self.schedule) then
-                self:play() 
+                self:play()
             end
         end
-    
+
         if self.loop and playable(self.schedule) and not self.paused and not self.sound:isPlaying() then
             self.sound:play()
         elseif self.loop and self.sound:isPlaying() and not playable(self.schedule) then
@@ -91,7 +94,7 @@ function sound:update(dt)
         if not self.hasFinished then
             local position = sound:tell()
             local duration = sound:getDuration()
-    
+
             -- Confronto con una tolleranza piccola per evitare problemi di precisione
             if position >= duration - 0.01 and not sound:isPlaying() then
                 self.hasFinished = true
@@ -115,7 +118,7 @@ end
 --------------------------------------------------------------------------------------------------------------------------------
 function sound:setVolume()
     if type(self.volume) == "table" then
-        local volume = love.math.random(self.volume[1] * 10, self.volume[2] * 10)/10
+        local volume = love.math.random(self.volume[1] * 10, self.volume[2] * 10) / 10
         self.sound:setVolume(clamp(volume, 0, 1))
     else
         self.sound:setVolume(clamp(self.volume, 0, 1))
@@ -132,15 +135,17 @@ function sound:setPitch()
     end
 end
 
-
+--------------------------------------------------------------------------------------------------------------------------------
+---
 function sound:setPosition()
     if type(self.position) == "table" then
-        if type(self.position[1]) == "table" and type(self.position[2]) == table then
+        if type(self.position[1]) == "table" and type(self.position[2]) == table and type(self.position[3]) == "table"then
             local x = love.math.random(self.position[1][1] * 10, self.position[1][2] * 10) / 10
             local y = love.math.random(self.position[2][1] * 10, self.position[2][2] * 10) / 10
-            self.sound:setPosition(x, y)
+            local z = love.math.random(self.position[3][1] * 10, self.position[3][2] * 10) / 10
+            self.sound:setPosition(x, y, z)
         else
-            self.sound:setPosition(self.position[1], self.position[2])
+            self.sound:setPosition(self.position[1], self.position[2], self.position[3])
         end
     end
 end
@@ -163,6 +168,7 @@ function sound:play()
     self:setPitch()
     self:resetTime()
     self:setEffects()
+    self:setPosition()
     self.sound:play()
     self.paused = false
 end
