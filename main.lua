@@ -31,8 +31,9 @@ function love.draw(  )
 
 	-- Every window should be contained in a Begin/End block.
 	UI2D.Begin( "My Window", 200, 200 )
-	UI2D.Button( "My First Button" )
-	UI2D.End( pass )
+	UI2D.Label( "We're doing progress...", true )
+
+	UI2D.End(  )
 
 	-- This marks the end of the GUI.
 	UI2D.RenderFrame()

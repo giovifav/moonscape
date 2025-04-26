@@ -2,12 +2,12 @@
 return {
     title = "A sample TapeFile definition", -- tape title
     author = "Giovanni Favaro", -- optional - tape author
-    info = "", -- optional - extra info 
-    cover = "cover.png", -- optional - relative path to the cover art (jpeg, png) for the tape
-    cover =  { "cover1.png", "cover2.png" }, -- optional - array of relative path to the cover art (jpeg, png) for the tape
-    video = "video.ogv", -- optional - relative path to the video ( Ogg Theora video ) for the tape
-    video = { "video1.ogv", "video2.ogv" }, -- optional - array of relative path to the video ( Ogg Theora video ) for the tape
-    volume = 0.7, -- set the master volume between 0 and 1 , the master volume is also controllable via gui - optional - default = 1
+    info = "This is a tape", -- optional - extra info 
+    --cover = "cover.png", -- optional - relative path to the cover art (jpeg, png) for the tape
+    --cover =  { "cover1.png", "cover2.png" }, -- optional - array of relative path to the cover art (jpeg, png) for the tape
+    --video = "video.ogv", -- optional - relative path to the video ( Ogg Theora video ) for the tape
+    --video = { "video1.ogv", "video2.ogv" }, -- optional - array of relative path to the video ( Ogg Theora video ) for the tape
+    --volume = 0.7, -- set the master volume between 0 and 1 , the master volume is also controllable via gui - optional - default = 1
    
     sounds = {
         -- the sounds table in an array of tables, every subtable contains info for a specific sound
